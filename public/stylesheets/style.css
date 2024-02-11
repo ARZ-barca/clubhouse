@@ -81,3 +81,61 @@ header .links {
 }
 
 /* end of header  styles*/
+
+/* form styles */
+
+.form-conteiner {
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  flex-grow: 1;
+
+  margin-top: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 40px;
+  max-width: 900px;
+
+  /* border: 1px solid black; */
+}
+
+.form-group {
+  margin-bottom: 25px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group.button {
+  max-width: 500px;
+  margin: auto;
+}
+
+.form-group:last-child {
+  margin-top: 40px;
+}
+
+form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+
+  background-color: beige;
+}
+
+form input:focus {
+  box-shadow: 0px 0px 5px 2px rgb(0, 28, 155);
+}
+
+form button {
+  padding: 15px 5px;
+  background-color: aqua;
+  border: none;
+  border-radius: 10px;
+}
+/* end of form styles */

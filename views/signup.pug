@@ -1,0 +1,23 @@
+extends layout 
+
+block content
+  .form-conteiner
+    form(action="", method="post") 
+      .form-group 
+        label(for="firstname") first name
+        input(type="text", name="firstname", id="firstname", placeholder="jon", required)
+      .form-group 
+        label(for="lastname") last name(optional)
+        input(type="text", name="lastname", id="lastname", placeholder="jones")
+      .form-group 
+        label(for="username") username(for login)
+        input(type="text", name="username", id="username", placeholder="bones", required)
+      .form-group 
+        label(for="password") password
+        input(type="text", name="password", id="password", required)
+      .form-group 
+        label(for="passwordConfirm") confirm password 
+        input(type="text", name="passwordConfirm", id="passwordConfirm", required)
+      .form-group.button
+        button(type="submit") sign up
+    
