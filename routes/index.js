@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcryptjs");
 
 const User = require("../models/user");
 
@@ -18,19 +20,61 @@ router.get("/signup", (req, res, next) => {
 });
 
 router.post("/signup", [
-  body("firstname", "firstname should be between 3 and 50 characters")
+  body("firstname", "firstname should be below 50 characters")
     .trim()
-    .isEmpty()
+    .notEmpty()
     .withMessage("firstname can't be empty")
-    .isLength({ min: 3, max: 50 }),
-  body("lastname", "lastname should be between 3 and 50 characters")
+    .isLength({ max: 50 })
+    .escape(),
+  body("lastname", "lastname should be below 50 characters")
     .trim()
-    .isLength({ min: 3, max: 50 }),
-  body("username", "username should be between 3 and 50 characters")
+    .optional({ values: "falsy" })
+    .isLength({ max: 50 })
+    .escape(),
+  body("username")
     .trim()
-    .isEmpty()
-    .withMessage("username can't be empty"),
-  (req, res, next) => {},
+    .notEmpty()
+    .withMessage("username can't be empty")
+    .isLength({ max: 50 })
+    .withMessage("username should be below 50 characters")
+    .custom(async (value) => {
+      const userWithTHisUsername = await User.findOne({ username: value });
+      if (userWithTHisUsername) {
+        throw new Error("user with this username already exists");
+      }
+      return true;
+    })
+    .escape(),
+  body("password", "password should be atleast 6 characters")
+    .trim()
+    .notEmpty()
+    .withMessage("password can't be empty")
+    .isLength({ min: 6 })
+    .escape(),
+  body("passwordConfirm", "password confirm doesn't match the password")
+    .custom((value, { req }) => {
+      return req.body.password === value;
+    })
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const user = new User({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      username: req.body.username,
+      passwordHash: "placeholder",
+    });
+
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+      return res.render("signup", { user: user, errors: errors.array() });
+    }
+
+    // todo bcrypt hash to save the user
+
+    res.send("good job valid!");
+  }),
 ]);
 
 router.get("/login", placeholderController);

@@ -4,8 +4,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const mongodbURL = process.env.MONGODB;
 require("dotenv").config();
+const mongodbURL = process.env.MONGODB;
 
 const indexRouter = require("./routes/index");
 

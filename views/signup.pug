@@ -5,19 +5,31 @@ block content
     form(action="", method="post") 
       .form-group 
         label(for="firstname") first name
-        input(type="text", name="firstname", id="firstname", placeholder="jon", required)
+        if user
+          input(type="text", name="firstname", id="firstname", placeholder="jon", value=user.firstname, maxlength="50",required)
+        else
+          input(type="text", name="firstname", id="firstname", placeholder="jon", maxlength="50", required)
       .form-group 
         label(for="lastname") last name(optional)
-        input(type="text", name="lastname", id="lastname", placeholder="jones")
+        if user
+          input(type="text", name="lastname", id="lastname", placeholder="jones", maxlength="50", value=user.lastname)
+        else
+          input(type="text", name="lastname", id="lastname", maxlength="50", placeholder="jones")
       .form-group 
         label(for="username") username(for login)
-        input(type="text", name="username", id="username", placeholder="bones", required)
+        if user 
+          input(type="text", name="username", id="username", placeholder="bones", value=user.username, maxlength="50", required)
+        else
+          input(type="text", name="username", id="username", placeholder="bones", maxlength="50", required)
       .form-group 
         label(for="password") password
-        input(type="text", name="password", id="password", required)
+        input(type="password", name="password", id="password", maxlength="50", minlength="6", required)
       .form-group 
         label(for="passwordConfirm") confirm password 
-        input(type="text", name="passwordConfirm", id="passwordConfirm", required)
+        input(type="password", name="passwordConfirm", id="passwordConfirm",  minlength="6", maxlength=50, required)
       .form-group.button
         button(type="submit") sign up
-    
+  if errors
+    ul.errors
+      for e in errors
+        li= e.msg
