@@ -68,10 +68,17 @@ router.post("/signup", [
 
     if (!errors.isEmpty()) {
       console.log(errors.array());
-      return res.render("signup", { user: user, errors: errors.array() });
+      res.render("signup", { user: user, errors: errors.array() });
+      return;
     }
 
-    // todo bcrypt hash to save the user
+    bcrypt.hash(req.body.password, 10, async (err, passwordHash) => {
+      if (err) {
+        next(err);
+      }
+      user.passwordHash = passwordHash;
+      await user.save();
+    });
 
     res.send("good job valid!");
   }),
