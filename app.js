@@ -4,8 +4,18 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+
+const bcrypt = require("bcryptjs");
+
 require("dotenv").config();
+
 const mongodbURL = process.env.MONGODB;
+
+const User = require("./models/user");
 
 const indexRouter = require("./routes/index");
 
@@ -15,6 +25,45 @@ main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongodbURL);
 }
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = User.findOne({ username: username });
+      if (user) {
+        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+        if (passwordMatch) {
+          // correct
+          return done(null, user);
+        }
+        return done(null, false, { message: "incorrect password" });
+      }
+      return done(null, false, { message: "incorrect username" });
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, { id: user.id, admin: user.admin, member: user.member });
+});
+
+passport.deserializeUser(async (user, done) => {
+  done(null, user);
+});
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true, maxAge: 24 * 60 * 60 * 1000 /* a day */ },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.authenticate("session"));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -78,9 +78,13 @@ router.post("/signup", [
       }
       user.passwordHash = passwordHash;
       await user.save();
+      req.login(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/");
+      });
     });
-
-    res.send("good job valid!");
   }),
 ]);
 
