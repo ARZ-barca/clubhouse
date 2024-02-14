@@ -11,11 +11,13 @@ html(lang="en")
         The Asgard Clubhouse
       ul.links
         li
-          a(href="/") messages 
-        li 
-          a(href="/login") login  
-        li    
-          a(href="/signup") sign up 
+          a(href="/") messages
+        if !user
+          li 
+            a(href="/login") login  
+        if !user
+          li    
+            a(href="/signup") sign up 
 
 
     block content

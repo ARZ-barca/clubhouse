@@ -1,13 +1,14 @@
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+
+const MongoStore = require("connect-mongo");
 
 const bcrypt = require("bcryptjs");
 
@@ -25,6 +26,24 @@ main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongodbURL);
 }
+
+const sessionStore = new MongoStore({
+  client: mongoose.connection.getClient(),
+  collectionName: "sessions",
+});
+
+app.use(
+  session({
+    secret: "cats",
+    resave: false,
+    saveUninitialized: false,
+    // store: sessionStore,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 /* a day */ },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.authenticate("session"));
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -46,24 +65,12 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, { id: user.id, admin: user.admin, member: user.member });
+  done(null, { _id: user._id, admin: user.admin, member: user.member });
 });
 
-passport.deserializeUser(async (user, done) => {
+passport.deserializeUser((user, done) => {
   done(null, user);
 });
-
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true, maxAge: 24 * 60 * 60 * 1000 /* a day */ },
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.authenticate("session"));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -72,8 +79,13 @@ app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// add user variable to view files
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 app.use("/", indexRouter);
 

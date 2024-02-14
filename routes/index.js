@@ -67,7 +67,6 @@ router.post("/signup", [
     });
 
     if (!errors.isEmpty()) {
-      console.log(errors.array());
       res.render("signup", { user: user, errors: errors.array() });
       return;
     }
