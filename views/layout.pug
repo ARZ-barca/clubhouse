@@ -24,5 +24,8 @@ html(lang="en")
           if !user.admin
             li 
               a(href="/admin") admin
+          li
+            form(action="/logout", method="post")#logout
+              button(type="submit") logout
 
     block content

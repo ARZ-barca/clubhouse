@@ -89,7 +89,6 @@ router.post("/signup", [
 ]);
 
 router.get("/login", (req, res, next) => {
-  console.log(req.session.messages);
   if (req.session.messages) {
     res.render("login", {
       errors: [{ msg: req.session.messages[req.session.messages.length - 1] }],
@@ -135,9 +134,14 @@ router.post("/login", [
   }),
 ]);
 
-router.get("/logout", placeholderController);
-
-router.post("/logout", placeholderController);
+router.post("/logout", (req, res, next) => {
+  req.logOut((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 router.get("/member", placeholderController);
 

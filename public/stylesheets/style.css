@@ -76,8 +76,18 @@ header .links {
   display: flex;
   gap: 15px;
   align-items: center;
-
+  flex-wrap: wrap;
   font-size: 1.5rem;
+  font-weight: normal;
+}
+
+#logout button {
+  background-color: transparent;
+  font-size: 1.5rem;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* end of header  styles*/
@@ -89,7 +99,7 @@ header .links {
   justify-content: center;
 }
 
-form {
+form:not(#logout) {
   flex-grow: 1;
 
   margin-top: 40px;
