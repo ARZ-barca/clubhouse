@@ -18,6 +18,8 @@ html(lang="en")
           li    
             a(href="/signup") sign up 
         else
+          li
+            a(href="/new-message") new message
           if !user.member
             li 
               a(href="/member") member  

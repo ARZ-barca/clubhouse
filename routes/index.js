@@ -96,7 +96,6 @@ router.get("/login", (req, res, next) => {
   } else {
     res.render("login");
   }
-  req.session.messages = [];
 });
 
 router.post("/login", [
