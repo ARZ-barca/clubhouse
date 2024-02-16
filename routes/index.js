@@ -150,7 +150,10 @@ router.get("/admin", placeholderController);
 
 router.post("/admin", placeholderController);
 
-router.get("/new-message", placeholderController);
+router.get("/new-message", (req, res, next) => {
+  // todo
+  res.render("new-message");
+});
 
 router.post("/new-message", placeholderController);
 

@@ -126,7 +126,8 @@ form:not(#logout) {
   margin-top: 40px;
 }
 
-form input {
+form input,
+form textarea {
   padding: 10px;
   border-radius: 10px;
   border: none;
@@ -136,6 +137,9 @@ form input {
   background-color: beige;
 }
 
+form textarea {
+  resize: vertical;
+}
 form input:focus {
   box-shadow: 0px 0px 5px 2px rgb(0, 28, 155);
 }
