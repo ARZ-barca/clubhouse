@@ -3,22 +3,24 @@ extends layout
 block content
   .form-conteiner
     form(action="", method="post") 
+      .form-group
+        h1.form-heading sign up
       .form-group 
         label(for="firstname") first name
-        if user
-          input(type="text", name="firstname", id="firstname", placeholder="jon", value=user.firstname, maxlength="50",required)
+        if info
+          input(type="text", name="firstname", id="firstname", placeholder="jon", value=info.firstname, maxlength="50",required)
         else
           input(type="text", name="firstname", id="firstname", placeholder="jon", maxlength="50", required)
       .form-group 
         label(for="lastname") last name(optional)
-        if user
-          input(type="text", name="lastname", id="lastname", placeholder="jones", maxlength="50", value=user.lastname)
+        if info
+          input(type="text", name="lastname", id="lastname", placeholder="jones", maxlength="50", value=info.lastname)
         else
           input(type="text", name="lastname", id="lastname", maxlength="50", placeholder="jones")
       .form-group 
         label(for="username") username(for login)
-        if user 
-          input(type="text", name="username", id="username", placeholder="bones", value=user.username, maxlength="50", required)
+        if info 
+          input(type="text", name="username", id="username", placeholder="bones", value=info.username, maxlength="50", required)
         else
           input(type="text", name="username", id="username", placeholder="bones", maxlength="50", required)
       .form-group 

@@ -97,8 +97,6 @@ form {
   margin-right: 20px;
   margin-bottom: 40px;
   max-width: 900px;
-
-  /* border: 1px solid black; */
 }
 
 .form-group {
@@ -110,7 +108,7 @@ form {
 }
 
 .form-group.button {
-  max-width: 500px;
+  /* max-width: 500px; */
   margin: auto;
 }
 

@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
 const { validationResult, body } = require("express-validator");
+const passport = require("passport");
 
 const placeholderController = (req, res) => {
   res.send("to be implemented");
@@ -67,7 +68,7 @@ router.post("/signup", [
     });
 
     if (!errors.isEmpty()) {
-      res.render("signup", { user: user, errors: errors.array() });
+      res.render("signup", { info: user, errors: errors.array() });
       return;
     }
 
@@ -87,9 +88,52 @@ router.post("/signup", [
   }),
 ]);
 
-router.get("/login", placeholderController);
+router.get("/login", (req, res, next) => {
+  console.log(req.session.messages);
+  if (req.session.messages) {
+    res.render("login", {
+      errors: [{ msg: req.session.messages[req.session.messages.length - 1] }],
+    });
+  } else {
+    res.render("login");
+  }
+  req.session.messages = [];
+});
 
-router.post("/login", placeholderController);
+router.post("/login", [
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("username can't be empty")
+    .isLength({ max: 50 })
+    .withMessage("username should be below 50 characters")
+    .escape(),
+  body("password", "password should be atleast 6 characters")
+    .trim()
+    .notEmpty()
+    .withMessage("password can't be empty")
+    .isLength({ min: 6 })
+    .escape(),
+  (req, res, next) => {
+    // express validator errors catcher
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("login", {
+        info: { username: req.body.username, password: req.body.password },
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      next();
+    }
+  },
+  passport.authenticate("local", {
+    failureMessage: true,
+    failureRedirect: "/login",
+    successRedirect: "/",
+  }),
+]);
 
 router.get("/logout", placeholderController);
 

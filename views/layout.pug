@@ -15,9 +15,14 @@ html(lang="en")
         if !user
           li 
             a(href="/login") login  
-        if !user
           li    
             a(href="/signup") sign up 
-
+        else
+          if !user.member
+            li 
+              a(href="/member") member  
+          if !user.admin
+            li 
+              a(href="/admin") admin
 
     block content

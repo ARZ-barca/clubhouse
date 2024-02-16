@@ -37,7 +37,7 @@ app.use(
     secret: "cats",
     resave: false,
     saveUninitialized: false,
-    // store: sessionStore,
+    store: sessionStore,
     cookie: { maxAge: 24 * 60 * 60 * 1000 /* a day */ },
   })
 );
@@ -46,22 +46,29 @@ app.use(passport.initialize());
 app.use(passport.authenticate("session"));
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = User.findOne({ username: username });
-      if (user) {
-        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-        if (passwordMatch) {
-          // correct
-          return done(null, user);
+  new LocalStrategy(
+    { passReqToCallback: true },
+    async (req, username, password, done) => {
+      req.session.messages = [];
+      try {
+        const user = await User.findOne({ username: username });
+        if (user) {
+          const passwordMatch = await bcrypt.compare(
+            password,
+            user.passwordHash
+          );
+          if (passwordMatch) {
+            // correct
+            return done(null, user);
+          }
+          return done(null, false, { message: "incorrect password" });
         }
-        return done(null, false, { message: "incorrect password" });
+        return done(null, false, { message: "incorrect username" });
+      } catch (err) {
+        return done(err);
       }
-      return done(null, false, { message: "incorrect username" });
-    } catch (err) {
-      return done(err);
     }
-  })
+  )
 );
 
 passport.serializeUser((user, done) => {
