@@ -8,15 +8,15 @@ block content
       .form-group 
         label(for="title") title
         if info
-          input(type="text", name="title", id="title", value=info.title, maxlength="50",required)
+          input(type="text", name="title", id="title", value=info.title, maxlength="100",required)
         else
           input(type="text", name="title", id="title", maxlength="100", required)
       .form-group 
         label(for="content") content
         if info
-          textarea(name="", rows="5", value=info.content, maxlength="1000", required) 
+          textarea(name="content", rows="5", value=info.content, maxlength="1000", required) 
         else
-          textarea(name="", rows="5", maxlength="1000", required) 
+          textarea(name="content", rows="5", maxlength="1000", required) 
       .form-group.button
         button(type="submit") create message
   if errors

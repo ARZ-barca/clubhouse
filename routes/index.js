@@ -189,9 +189,13 @@ router.post("/new-message", [
       author: req.user._id,
     });
 
-    res.send("you are auth but im implementing");
-
-    // todo check for authentication in certaint routes
+    if (!errors.isEmpty()) {
+      res.render("new-message", { info: message, errors: errors.array() });
+      return;
+    } else {
+      await message.save();
+      res.redirect("/");
+    }
   }),
 ]);
 
