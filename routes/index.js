@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/user");
+const Message = require("../models/message");
 
 const { validationResult, body } = require("express-validator");
 const passport = require("passport");
@@ -11,6 +12,14 @@ const passport = require("passport");
 const placeholderController = (req, res) => {
   res.send("to be implemented");
 };
+
+function isAuth(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect("/login");
+  }
+}
 
 router.get("/", (req, res, next) => {
   res.render("index");
@@ -150,11 +159,40 @@ router.get("/admin", placeholderController);
 
 router.post("/admin", placeholderController);
 
+router.use("/new-message", isAuth);
+
 router.get("/new-message", (req, res, next) => {
-  // todo
   res.render("new-message");
 });
 
-router.post("/new-message", placeholderController);
+router.post("/new-message", [
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("title can't be empty")
+    .isLength({ max: 100 })
+    .withMessage("title can't be more than 100 characters")
+    .escape(),
+  body("content")
+    .trim()
+    .notEmpty()
+    .withMessage("content can't be empty")
+    .isLength({ max: 1000 })
+    .withMessage("content can't be more than 1000 characters")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const message = new Message({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.user._id,
+    });
+
+    res.send("you are auth but im implementing");
+
+    // todo check for authentication in certaint routes
+  }),
+]);
 
 module.exports = router;
