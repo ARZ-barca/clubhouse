@@ -1,3 +1,16 @@
 extends layout
 
 block content
+  .messages
+    for message in messages
+      .message
+        //- p= message.title
+        //- p= message.content
+        //- p= message.createdAt 
+        //- p= message.author
+        p.author by message.author
+        p.title message.title
+        p.content message.contentmessage. contentmessage.contentmessage.content
+        p.createdAt message.createdAt 
+
+//- todo style messages

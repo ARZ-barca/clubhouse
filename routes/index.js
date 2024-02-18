@@ -13,6 +13,7 @@ const placeholderController = (req, res) => {
   res.send("to be implemented");
 };
 
+// a utility function
 function isAuth(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -21,9 +22,14 @@ function isAuth(req, res, next) {
   }
 }
 
-router.get("/", (req, res, next) => {
-  res.render("index");
-});
+router.get(
+  "/",
+  asyncHandler(async (req, res, next) => {
+    // todo
+    const messages = await Message.find({});
+    res.render("index", { messages });
+  })
+);
 
 router.get("/signup", (req, res, next) => {
   res.render("signup");

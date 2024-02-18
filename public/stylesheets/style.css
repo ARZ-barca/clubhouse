@@ -51,6 +51,7 @@ html {
 body {
   min-height: 100vh;
   background-color: #63bdc2;
+  color: aliceblue;
 }
 
 /* end of base styles */
@@ -66,6 +67,8 @@ header {
   padding: 20px;
 
   background-color: #3e7174;
+
+  color: aliceblue;
 }
 
 header .logo {
@@ -77,17 +80,18 @@ header .links {
   gap: 15px;
   align-items: center;
   flex-wrap: wrap;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: normal;
 }
 
 #logout button {
   background-color: transparent;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   padding: 0;
   margin: 0;
   color: inherit;
   cursor: pointer;
+  color: rgb(245, 173, 80);
 }
 
 /* end of header  styles*/
@@ -157,3 +161,50 @@ form button {
   color: rgb(116, 44, 22);
 }
 /* end of form styles */
+
+/* messages styles */
+
+.messages {
+  margin: 50px 10px 0 10px;
+}
+
+.message {
+  max-width: 600px;
+  margin: auto;
+  margin-bottom: 50px;
+  background-color: #3d4646;
+  border-radius: 10px;
+  padding: 10px;
+  color: blanchedalmond;
+}
+
+.message .author {
+  font-size: 0.8rem;
+
+  font-weight: 300;
+
+  margin-bottom: 15px;
+  margin-left: 10px;
+}
+
+.message .title {
+  font-size: 1.3rem;
+
+  margin-bottom: 25px;
+}
+
+.message .content {
+  font-size: 1rem;
+
+  padding-bottom: 15px;
+  border-bottom: 4px solid rgb(111, 206, 206);
+}
+
+.message .createdAt {
+  margin-top: 3px;
+  text-align: right;
+  color: rgb(143, 240, 240);
+  font-size: 0.8rem;
+}
+
+/* end of messages styles */
