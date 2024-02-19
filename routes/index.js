@@ -13,6 +13,8 @@ const placeholderController = (req, res) => {
   res.send("to be implemented");
 };
 
+const memberPass = require("../app").memberPass;
+
 // a utility function
 function isAuth(req, res, next) {
   if (req.isAuthenticated()) {
@@ -25,8 +27,13 @@ function isAuth(req, res, next) {
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    // todo
-    const messages = await Message.find({});
+    let messages;
+    if (req.isAuthenticated() && req.user.member) {
+      messages = await Message.find({}).populate("author");
+    } else {
+      messages = await Message.find({}, { title: 1, content: 1 });
+    }
+
     res.render("index", { messages });
   })
 );
@@ -133,7 +140,7 @@ router.post("/login", [
 
     if (!errors.isEmpty()) {
       res.render("login", {
-        info: { username: req.body.username, password: req.body.password },
+        info: { username: req.body.username },
         errors: errors.array(),
       });
       return;
@@ -157,9 +164,17 @@ router.post("/logout", (req, res, next) => {
   });
 });
 
-router.get("/member", placeholderController);
+router.use("/member", isAuth);
+
+// todo
+
+router.get("/member", (req, res, next) => {
+  res.render("member");
+});
 
 router.post("/member", placeholderController);
+
+router.use("/admin", isAuth);
 
 router.get("/admin", placeholderController);
 

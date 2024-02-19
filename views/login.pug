@@ -7,10 +7,10 @@ block content
         h1.form-heading login
       .form-group 
         label(for="username") username
-        if userInfo  
-          input(type="text", name="username", id="username", placeholder="bones", value=user.username, maxlength="50", required)
+        if info  
+          input(type="text", name="username", id="username", value=info.username, maxlength="50", required)
         else
-          input(type="text", name="username", id="username", placeholder="bones", maxlength="50", required)
+          input(type="text", name="username", id="username",maxlength="50", required)
       .form-group 
         label(for="password") password
         input(type="password", name="password", id="password", maxlength="50", minlength="6", required)

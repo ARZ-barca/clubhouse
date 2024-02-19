@@ -15,6 +15,8 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const mongodbURL = process.env.MONGODB;
+const memberPass = process.env.memberPass;
+module.exports.memberPass = memberPass;
 
 const User = require("./models/user");
 
