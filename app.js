@@ -17,6 +17,8 @@ require("dotenv").config();
 const MONGODBURL = process.env.MONGODB;
 const MEMBER_PASSWORD = process.env.MEMBER_PASSWORD;
 module.exports.MEMBER_PASSWORD = MEMBER_PASSWORD;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+module.exports.ADMIN_PASSWORD = ADMIN_PASSWORD;
 
 const User = require("./models/user");
 

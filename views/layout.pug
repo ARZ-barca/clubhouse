@@ -23,7 +23,7 @@ html(lang="en")
           if !user.member
             li 
               a(href="/member") member  
-          if !user.admin
+          if user.member && !user.admin
             li 
               a(href="/admin") admin
           li

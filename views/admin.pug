@@ -1,0 +1,16 @@
+extends layout 
+
+block content
+  .form-conteiner
+    form(action="", method="post") 
+      .form-group
+        h1.form-heading become an admin
+      .form-group 
+        label(for="admin-pass") what is my name?
+        input(type="text", name="admin-pass", id="admin-pass", placeholder="checkout alirezazabihi.com", maxlength="500", required)
+      .form-group.button
+        button(type="submit") submit
+  if errors
+    ul.errors
+      for e in errors
+        li= e.msg

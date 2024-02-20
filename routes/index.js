@@ -14,6 +14,7 @@ const placeholderController = (req, res) => {
 };
 
 const MEMBER_PASSWORD = require("../app").MEMBER_PASSWORD;
+const ADMIN_PASSWORD = require("../app").ADMIN_PASSWORD;
 
 // a utility function
 function isAuth(req, res, next) {
@@ -166,8 +167,6 @@ router.post("/logout", (req, res, next) => {
 
 router.use("/member", isAuth);
 
-// todo
-
 router.get("/member", (req, res, next) => {
   res.render("member");
 });
@@ -193,11 +192,40 @@ router.post("/member", [
   }),
 ]);
 
-router.use("/admin", isAuth);
+router.use("/admin", isAuth, (req, res, next) => {
+  if (req.user.member) {
+    return next();
+  } else {
+    res.redirect("/member");
+  }
+});
 
-router.get("/admin", placeholderController);
+// tod (same as member)
 
-router.post("/admin", placeholderController);
+router.get("/admin", (req, res, next) => {
+  res.render("admin");
+});
+
+router.post("/admin", [
+  body("admin-pass")
+    .custom((value) => {
+      return value === ADMIN_PASSWORD;
+    })
+    .withMessage("wrong password, did you check out my website?")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render("admin", { errors: errors.array() });
+      return;
+    }
+    const user = await User.findById(req.user._id);
+    user.admin = true;
+    await user.save();
+    req.session.passport.user.admin = true;
+    res.redirect("/");
+  }),
+]);
 
 router.use("/new-message", isAuth);
 
