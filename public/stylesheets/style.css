@@ -105,7 +105,7 @@ header .links {
   color: #293131;
 }
 
-form:not(#logout) {
+form:not(#logout):not(#delete-message-form) {
   flex-grow: 1;
 
   margin-top: 40px;
@@ -177,7 +177,6 @@ form button {
   background-color: #3d4646;
   border-radius: 10px;
   padding: 10px;
-  /* color: blanchedalmond; */
 }
 
 .message .author {
@@ -207,6 +206,17 @@ form button {
   text-align: right;
   color: rgb(143, 240, 240);
   font-size: 0.8rem;
+}
+
+.message form#delete-message-form {
+  margin-top: 15px;
+}
+.message #delete-message-button {
+  background-color: rgb(245, 127, 80);
+  padding: 5px 10px;
+  width: min(100px, 100%);
+  margin-left: auto;
+  cursor: pointer;
 }
 
 /* end of messages styles */

@@ -30,9 +30,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     let messages;
     if (req.isAuthenticated() && req.user.member) {
-      messages = await Message.find({}).populate("author");
+      messages = await Message.find({})
+        .populate("author")
+        .sort({ createdAt: 1 });
     } else {
-      messages = await Message.find({}, { title: 1, content: 1 });
+      messages = await Message.find({}, { author: 0 }).sort({ createdAt: 1 });
     }
 
     res.render("index", { messages });
@@ -266,5 +268,13 @@ router.post("/new-message", [
     }
   }),
 ]);
+
+router.post(
+  "/delete-message/:id",
+  asyncHandler(async (req, res, next) => {
+    await Message.findByIdAndDelete(req.params.id);
+    res.redirect("/");
+  })
+);
 
 module.exports = router;
