@@ -9,7 +9,7 @@ block content
         p.title= message.title
         p.content= message.content
         if user && user.member
-          p.createdAt= message.createdAt 
+          p.createdAt= message.createdAt_isodate
         if user && user.admin
           form(action=`/delete-message/${message._id}`, method="post")#delete-message-form
             button(type="submit")#delete-message-button Delete
