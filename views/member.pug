@@ -7,10 +7,7 @@ block content
         h1.form-heading become a member
       .form-group 
         label(for="member-pass", data-answer="tyr") who is the god of war?
-        if info  
-          input(type="text", name="member-pass", id="member-pass", placeholder="not kratos", value=info.wrong-answer, maxlength="500", required)
-        else
-          input(type="text", name="member-pass", id="member-pass", placeholder="not kratos", maxlength="500", required)
+        input(type="text", name="member-pass", id="member-pass", placeholder="not kratos", maxlength="500", required)
       .form-group.button
         button(type="submit") submit
   if errors

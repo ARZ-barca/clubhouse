@@ -14,9 +14,9 @@ const bcrypt = require("bcryptjs");
 
 require("dotenv").config();
 
-const mongodbURL = process.env.MONGODB;
-const memberPass = process.env.memberPass;
-module.exports.memberPass = memberPass;
+const MONGODBURL = process.env.MONGODB;
+const MEMBER_PASSWORD = process.env.MEMBER_PASSWORD;
+module.exports.MEMBER_PASSWORD = MEMBER_PASSWORD;
 
 const User = require("./models/user");
 
@@ -26,7 +26,7 @@ const app = express();
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(mongodbURL);
+  await mongoose.connect(MONGODBURL);
 }
 
 const sessionStore = new MongoStore({

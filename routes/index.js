@@ -13,7 +13,7 @@ const placeholderController = (req, res) => {
   res.send("to be implemented");
 };
 
-const memberPass = require("../app").memberPass;
+const MEMBER_PASSWORD = require("../app").MEMBER_PASSWORD;
 
 // a utility function
 function isAuth(req, res, next) {
@@ -172,7 +172,26 @@ router.get("/member", (req, res, next) => {
   res.render("member");
 });
 
-router.post("/member", placeholderController);
+router.post("/member", [
+  body("member-pass")
+    .custom((value) => {
+      return value === MEMBER_PASSWORD;
+    })
+    .withMessage("wrong password try inspecting")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render("member", { errors: errors.array() });
+      return;
+    }
+    const user = await User.findById(req.user._id);
+    user.member = true;
+    await user.save();
+    req.session.passport.user.member = true;
+    res.redirect("/");
+  }),
+]);
 
 router.use("/admin", isAuth);
 

@@ -4,9 +4,9 @@ block content
   .messages
     for message in messages
       .message
-        if user && user.admin
-          p.author by #{message.author}
+        if user && user.member
+          p.author by #{message.author.fullname} 
         p.title= message.title
         p.content= message.content
-        if user && user.admin
+        if user && user.member
           p.createdAt= message.createdAt 

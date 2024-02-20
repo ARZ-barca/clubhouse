@@ -10,7 +10,7 @@ const authorSchema = new mongoose.Schema({
 });
 
 authorSchema.virtual("fullname").get(function () {
-  return this.firstName + " " + this.lastName;
+  return this.firstname + " " + this.lastname;
 });
 
 module.exports = mongoose.model("User", authorSchema);
