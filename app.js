@@ -8,6 +8,9 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
+const compression = require("compression");
+const helmet = require("helmet");
+
 const MongoStore = require("connect-mongo");
 
 const bcrypt = require("bcryptjs");
@@ -25,6 +28,13 @@ const User = require("./models/user");
 const indexRouter = require("./routes/index");
 
 const app = express();
+
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
+});
+app.use(limiter);
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -87,9 +97,13 @@ passport.deserializeUser((user, done) => {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+app.use(helmet());
+app.use(compression());
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, "public")));
 
 // add user variable to view files
