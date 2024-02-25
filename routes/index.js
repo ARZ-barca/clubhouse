@@ -32,9 +32,11 @@ router.get(
     if (req.isAuthenticated() && req.user.member) {
       messages = await Message.find({})
         .populate("author")
-        .sort({ createdAt: 1 });
+        .sort({ createdAt: -1 });
     } else {
-      messages = await Message.find({}, { author: 0 }).sort({ createdAt: -1 });
+      messages = await Message.find({}, { author: 0 })
+        .sort({ createdAt: -1 })
+        .exec();
     }
 
     res.render("index", { messages });

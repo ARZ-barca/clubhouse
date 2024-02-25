@@ -13,7 +13,6 @@ const messageSchema = new mongoose.Schema({
 
 messageSchema.virtual("createdAt_isodate").get(function () {
   const dt = DateTime.fromJSDate(this.createdAt);
-  console.log(this.createdAt);
   return dt.toISODate();
 });
 
