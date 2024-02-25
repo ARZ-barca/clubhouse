@@ -34,7 +34,7 @@ router.get(
         .populate("author")
         .sort({ createdAt: 1 });
     } else {
-      messages = await Message.find({}, { author: 0 }).sort({ createdAt: 1 });
+      messages = await Message.find({}, { author: 0 }).sort({ createdAt: -1 });
     }
 
     res.render("index", { messages });

@@ -46,6 +46,11 @@ a {
 
 html {
   font-size: 16px;
+  font-family: "Skranji", system-ui;
+}
+
+button {
+  font-family: "Skranji", system-ui;
 }
 
 body {
