@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Skranji
+- Font Author: Copyright (c) 2012 by Font Diner, Inc DBA Neapolitan (diner@fontdiner.com) with Reseved Font Name "Skranji Bold"
+- Font Source: http://fonts.gstatic.com/s/skranji/v13/OZpDg_dtriVFNerMYzuuklTm3Ek.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
